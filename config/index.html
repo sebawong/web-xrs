@@ -218,7 +218,8 @@ const app=initializeApp({apiKey:"AIzaSyAfQZ4RARhe-jTD3emW4JVTmS_HMYBbZ2E",authDo
 const db=getFirestore(app);const D=doc(db,'config','hero');
 window._fb={db,D,setDoc,getDoc,onSnapshot};
 async function load(){try{const s=await getDoc(D);if(s.exists()&&s.data().tracks){window.config=s.data();window.syncOK=true;window.boot();}else{await setDoc(D,JSON.parse(JSON.stringify(window.config)));window.syncOK=true;window.boot();}}catch(e){console.warn('FB load:',e);window.syncOK=false;window.boot();}}
-onSnapshot(D,s=>{if(s.exists()&&s.data().tracks){const d=s.data();if(JSON.stringify(d)!==JSON.stringify(window.config)){window.config=d;window.syncOK=true;window.fullRender();}}},e=>{window.syncOK=false;updSync();});
+let _lastPush='';
+onSnapshot(D,s=>{if(s.exists()&&s.data().tracks){const d=s.data();const j=JSON.stringify(d);if(j!==_lastPush&&j!==JSON.stringify(window.config)){window.config=d;window.syncOK=true;window.fullRender();}}},e=>{window.syncOK=false;updSync();});
 setTimeout(load,200);
 </script>
 
@@ -435,8 +436,8 @@ html+=`
 <option value="700"${m.fontWeight===700?' selected':''}>Bold 700</option>
 <option value="800"${m.fontWeight===800?' selected':''}>Extra 800</option>
 </select></div>
-<div class="prop-row"><span class="prop-label">Color</span><input type="color" class="prop-color" value="${m.color}" onchange="updMod('color',this.value)"><span style="flex:1;font-size:.75rem;color:var(--text-dim)">${m.color}</span></div>
-${m.type==='cta'?`<div class="prop-row"><span class="prop-label">BG Color</span><input type="color" class="prop-color" value="${m.bgColor||'#e7bf9c'}" onchange="updMod('bgColor',this.value)"></div>
+<div class="prop-row"><span class="prop-label">Color</span><input type="color" class="prop-color" value="${m.color}" oninput="updMod('color',this.value)"><span style="flex:1;font-size:.75rem;color:var(--text-dim)">${m.color}</span></div>
+${m.type==='cta'?`<div class="prop-row"><span class="prop-label">BG Color</span><input type="color" class="prop-color" value="${m.bgColor||'#e7bf9c'}" oninput="updMod('bgColor',this.value)"></div>
 <div class="prop-row"><span class="prop-label">Link</span><input class="prop-input" value="${esc(m.href||'#')}" onchange="updMod('href',this.value)"></div>`:''}
 <div class="prop-row"><span class="prop-label">Spacing</span><input type="range" class="prop-range" min="-3" max="15" value="${m.letterSpacing}" oninput="updMod('letterSpacing',parseFloat(this.value));this.nextElementSibling.textContent=this.value"><span class="prop-range-val">${m.letterSpacing}</span></div>
 <div class="prop-row"><span class="prop-label">Line H</span><input type="range" class="prop-range" min=".8" max="2.5" step=".05" value="${m.lineHeight}" oninput="updMod('lineHeight',parseFloat(this.value));this.nextElementSibling.textContent=this.value"><span class="prop-range-val">${m.lineHeight}</span></div>
@@ -464,7 +465,12 @@ body.innerHTML=html;
 }
 
 function updClip(k,v){config.tracks[sel.track].clips[sel.clip][k]=v;autoSave();renderPreview();renderTimeline();}
-function updMod(k,v){config.tracks[sel.track].clips[sel.clip].modules[sel.mod][k]=v;autoSave();renderPreview();renderProps();}
+function updMod(k,v){
+    config.tracks[sel.track].clips[sel.clip].modules[sel.mod][k]=v;
+    autoSave();renderPreview();
+    // Only re-render props if it's not a slider drag (to keep focus)
+    if(!['fontSize','letterSpacing','lineHeight','opacity'].includes(k)) renderProps();
+}
 function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
 function addModToClip(){
@@ -674,12 +680,19 @@ window.stepForward=()=>{stopPlay();progress=Math.min(1,progress+1/config.frameCo
 window.jumpTo=(p)=>{stopPlay();progress=p;renderPreview();};
 
 /* ── FIREBASE ── */
-let saveTimer=null;
-window.autoSave=()=>{clearTimeout(saveTimer);saveTimer=setTimeout(()=>saveToFirebase(),1200);};
+let saveTimer=null;let lastSave=0;
+window.autoSave=()=>{
+    clearTimeout(saveTimer);
+    const now=Date.now();
+    // During drags: throttle to 100ms. Otherwise: instant.
+    const delay=dragState?100:0;
+    if(now-lastSave<delay){saveTimer=setTimeout(()=>autoSave(),delay);return;}
+    lastSave=now;saveToFirebase();
+};
 window.saveToFirebase=async function(){
 if(!window._fb)return;
 document.getElementById('syncDot').className='sync-dot';
-try{await window._fb.setDoc(window._fb.D,JSON.parse(JSON.stringify(config)));document.getElementById('syncDot').className='sync-dot';}
+try{const d=JSON.parse(JSON.stringify(config));window._lastPush=JSON.stringify(d);await window._fb.setDoc(window._fb.D,d);document.getElementById('syncDot').className='sync-dot';}
 catch(e){document.getElementById('syncDot').className='sync-dot err';console.error(e);}
 };
 function updSync(){document.getElementById('syncDot').className=window.syncOK?'sync-dot':'sync-dot err';}
