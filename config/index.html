@@ -403,7 +403,9 @@ config.tracks.forEach((track,ti)=>{
             d.onmousedown=(e)=>{
                 e.stopPropagation();
                 if(!s){selectMod(ti,ci,mi,e.ctrlKey||e.metaKey);return;}
-                // Already selected → start preview drag
+                // Already selected + Ctrl → deselect
+                if(e.ctrlKey||e.metaKey){selectMod(ti,ci,mi,true);return;}
+                // Already selected, no Ctrl → start preview drag
                 startPreviewDrag(e);
             };
             layer.appendChild(d);
@@ -605,7 +607,8 @@ config.tracks.forEach((track,ti)=>{
                 clipEl.onmousedown=(e)=>{
                     if(e.target.classList.contains('tl-clip-handle'))return;
                     e.stopPropagation();
-                    if(!s)selectMod(ti,ci,mi,e.ctrlKey||e.metaKey);
+                    if(!s){selectMod(ti,ci,mi,e.ctrlKey||e.metaKey);return;}
+                    if(e.ctrlKey||e.metaKey){selectMod(ti,ci,mi,true);return;}
                     startTlDrag(e,totalW);
                 };
                 const hl=document.createElement('div');hl.className='tl-clip-handle left';
