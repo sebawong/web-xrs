@@ -1,285 +1,441 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XRS - Real Estate Experiences</title>
-    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@300;400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="style.css">
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>XRS | Comercialización Estratégica para Real Estate</title>
+    <meta name="description" content="Potenciamos cómo un proyecto se presenta, se entiende y se vende. Partner estratégico de comercialización para real estate." />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
 
- <nav id="navbar">
-    <div class="nav-container">
-        <a href="/" class="logo-container">
-            <img src="img/logo-xrs-dorado.png" alt="Logo XRS" class="nav-logo">
-        </a>
-        <a href="#" class="btn-cta">Solicita cotizacion</a>
-    </div>
-</nav>
-
-<header class="hero">
-
-  <video class="hero-video" autoplay muted loop playsinline>
-    <source src="img/video-banner2.mp4" type="video/mp4">
-  </video>
-
-  <div class="hero-overlay"></div>
-
-  <div class="hero-content">
-    <h1>El <span class="light-italic">futuro</span> del Real estate,<span class="light-italic"> hoy.</span></h1>
-    <h2>Visualiza hoy el proyecto que se construirá mañana.</h2>
-  </div>
-
-</header>
-
-    <section class="projects-section">
-        <div class="projects-header">
-            <div>
-                <span class="badge-outline">Confían en nosotros</span>
-                <h2 class="section-title">Proyectos recientes</h2>
-            </div>
-            <div class="nav-arrows">
-                <div class="swiper-button-prev-custom">←</div>
-                <div class="swiper-button-next-custom">→</div>
-            </div>
+    <!-- ========== NAV ========== -->
+    <nav class="main-nav" id="mainNav">
+        <div class="nav-brand">
+            <img src="img/logo-xrsbaseline-dorado.svg" alt="XRS" class="nav-logo">
         </div>
+        <div class="nav-links">
+            <a href="#enfoque" class="nav-link active">Enfoque</a>
+            <a href="#niveles" class="nav-link">Niveles</a>
+            <a href="#desarrollo" class="nav-link">Desarrollo</a>
+            <a href="#casos" class="nav-link">Casos</a>
+            <a href="#diagnostico" class="nav-link">Autodiagnóstico</a>
+        </div>
+        <a href="#diagnostico" class="btn-primary btn-sm">Hacer autodiagnóstico</a>
+    </nav>
 
-        <div class="swiper projects-swiper">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <div class="project-card" style="background-image: url('img/udaondo-img.webp');">
-                        <div class="project-overlay">
-                            <span class="project-tag">Udaondo</span>
-                            <div class="project-info">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+    <main>
+
+        <!-- ========== HERO (SCROLL SEQUENCE — Dynamic from Firebase) ========== -->
+        <section class="hero-scroll-section" id="inicio">
+            <div class="hero-scroll-sticky">
+                <canvas id="heroCanvas"></canvas>
+                <div class="hero-scroll-overlay"></div>
+                <!-- Text modules are injected dynamically from Firebase config -->
+            </div>
+        </section>
+
+        <!-- ========== PROBLEM ========== -->
+        <section class="problem-section" id="enfoque">
+            <div class="section-container">
+                <div class="problem-header">
+                    <h2 class="reveal">Un proyecto puede perder valor <br/>mucho antes de la venta.</h2>
+                    <p class="reveal">Identificamos las brechas críticas que impiden que los proyectos de gran escala alcancen su máximo potencial comercial.</p>
+                </div>
+                <div class="problem-grid">
+                    <div class="problem-card reveal">
+                        <span class="problem-number">01 / Percepción</span>
+                        <h3>Valor mal expresado</h3>
+                        <p>Cuando los atributos estratégicos del proyecto quedan sepultados bajo una comunicación genérica.</p>
+                    </div>
+                    <div class="problem-card reveal">
+                        <span class="problem-number">02 / Coherencia</span>
+                        <h3>Activos desconectados</h3>
+                        <p>Falta de hilo conductor entre la visión del desarrollador y lo que el mercado experimenta.</p>
+                    </div>
+                    <div class="problem-card reveal">
+                        <span class="problem-number">03 / Conversión</span>
+                        <h3>Experiencia insuficiente</h3>
+                        <p>Herramientas de venta que no logran transmitir la escala ni la calidad real del desarrollo.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== APPROACH ========== -->
+        <section class="approach-section" id="filosofia">
+            <div class="approach-container">
+                <div class="approach-image reveal">
+                    <img src="img/stitch-v2-approach.jpg" alt="Arquitectura interior">
+                </div>
+                <div class="approach-content">
+                    <span class="section-tag reveal">Nuestra Filosofía</span>
+                    <h2 class="reveal">XRS se integra donde más valor puede aportar.</h2>
+                    <p class="reveal">No somos una agencia que espera un brief. Somos un partner estratégico que se adapta a la estructura del cliente para fortalecer la toma de decisiones comerciales.</p>
+                    <div class="approach-features">
+                        <div class="approach-feature reveal">
+                            <div class="feature-icon">
+                                <span class="material-symbols-outlined">check</span>
+                            </div>
+                            <div>
+                                <h4>Flexibilidad Estructural</h4>
+                                <p>Nos insertamos en equipos de marketing internos o lideramos la estrategia externa.</p>
+                            </div>
+                        </div>
+                        <div class="approach-feature reveal">
+                            <div class="feature-icon">
+                                <span class="material-symbols-outlined">check</span>
+                            </div>
+                            <div>
+                                <h4>Agnosticismo Tecnológico</h4>
+                                <p>Elegimos las herramientas por su efectividad comercial, no por tendencia.</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="swiper-slide">
-                    <div class="project-card" style="background-image: url('img/bajobelgran-img.webp');">
-                        <div class="project-overlay">
-                            <span class="project-tag">Bajo Belgrano</span>
-                            <div class="project-info">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+        </section>
+
+        <!-- ========== NIVELES DE INTERVENCIÓN ========== -->
+        <section class="niveles-section" id="niveles">
+            <div class="section-container">
+                <div class="niveles-grid">
+                    <div class="nivel-card reveal">
+                        <div class="nivel-bar"></div>
+                        <h3>Autodiagnóstico</h3>
+                        <p>Identificación rápida de puntos ciegos en la estrategia actual del proyecto antes de realizar inversiones mayores.</p>
+                        <a href="#diagnostico" class="nivel-link">
+                            Comenzar ahora
+                            <span class="material-symbols-outlined">arrow_forward</span>
+                        </a>
+                    </div>
+                    <div class="nivel-card reveal">
+                        <div class="nivel-bar"></div>
+                        <h3>Planificación Estratégica</h3>
+                        <p>Diseño del ecosistema de comercialización: narrativa, perfiles de audiencia y canales de alto impacto.</p>
+                        <a href="#enfoque" class="nivel-link">
+                            Ver metodología
+                            <span class="material-symbols-outlined">arrow_forward</span>
+                        </a>
+                    </div>
+                    <div class="nivel-card reveal">
+                        <div class="nivel-bar"></div>
+                        <h3>Desarrollo</h3>
+                        <p>Ejecución técnica de los activos que darán vida al proyecto, desde plataformas hasta centros de experiencia.</p>
+                        <a href="#desarrollo" class="nivel-link">
+                            Ver entregables
+                            <span class="material-symbols-outlined">arrow_forward</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== DESARROLLO ========== -->
+        <section class="desarrollo-section" id="desarrollo">
+            <div class="section-container">
+                <h2 class="reveal">En Desarrollo, construimos las capas que <br class="desktop-only"/>potencian la experiencia comercial.</h2>
+                <div class="desarrollo-grid">
+                    <div class="desarrollo-card reveal">
+                        <div class="desarrollo-img">
+                            <img src="img/sls-img.webp" alt="Plataforma Digital">
+                        </div>
+                        <h4>Plataforma Digital</h4>
+                        <p>Ecosistemas web que transmutan renders en experiencias de navegación fluidas.</p>
+                    </div>
+                    <div class="desarrollo-card reveal">
+                        <div class="desarrollo-img">
+                            <img src="img/pride-img.webp" alt="Sistema de Contenido Visual">
+                        </div>
+                        <h4>Sistema de Contenido Visual</h4>
+                        <p>CGI y narrativa visual diseñada para proyectar no solo espacios, sino estilos de vida.</p>
+                    </div>
+                    <div class="desarrollo-card reveal">
+                        <div class="desarrollo-img">
+                            <img src="img/udaondo-img.webp" alt="Experiencia VR">
+                        </div>
+                        <h4>Experiencia VR</h4>
+                        <p>Recorridos inmersivos de alta fidelidad centrados en la decisión de compra.</p>
+                    </div>
+                    <div class="desarrollo-card reveal">
+                        <div class="desarrollo-img">
+                            <img src="img/inmersivo-footer.webp" alt="Experience Center">
+                        </div>
+                        <h4>Experience Center</h4>
+                        <p>Consultoría en el diseño del espacio físico donde se cierra la operación.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========== AUTODIAGNÓSTICO ========== -->
+        <section class="diagnostico-section" id="diagnostico">
+            <div class="diagnostico-content reveal">
+                <h2>Antes de avanzar, detectá dónde hay más oportunidad.</h2>
+                <p>Nuestro autodiagnóstico estratégico analiza 12 variables críticas de tu proyecto para determinar la salud de tu actual ecosistema de ventas.</p>
+                <a href="#" class="btn-dark btn-lg">Iniciar diagnóstico gratuito</a>
+            </div>
+        </section>
+
+        <!-- ========== CASOS ========== -->
+        <section class="casos-section" id="casos">
+            <div class="section-container">
+                <div class="casos-header">
+                    <span class="section-tag reveal">Nuestra Huella</span>
+                    <h2 class="reveal">No mostramos piezas. <br/>Mostramos cómo se potencia la comercialización.</h2>
+                </div>
+                <div class="casos-list">
+                    <!-- Caso 1 -->
+                    <div class="caso-item reveal">
+                        <div class="caso-image">
+                            <img src="img/stitch-v2-caso1.jpg" alt="Torre Velasco">
+                        </div>
+                        <div class="caso-info">
+                            <div class="caso-field">
+                                <label>Proyecto</label>
+                                <p class="caso-name">Torre Velasco</p>
+                            </div>
+                            <div class="caso-field">
+                                <label>Contexto</label>
+                                <p>Relanzamiento de proyecto premium en zona saturada con necesidad de diferenciación inmediata.</p>
+                            </div>
+                            <div class="caso-field">
+                                <label>Capas aplicadas</label>
+                                <p>Estrategia Narrativa, Experiencia VR 1:1, Plataforma de Gestión Comercial.</p>
+                            </div>
+                            <div class="caso-result">
+                                <label>Resultado</label>
+                                <p>+34% de conversión en leads calificados en los primeros 60 días.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Caso 2 -->
+                    <div class="caso-item caso-reverse reveal">
+                        <div class="caso-image">
+                            <img src="img/stitch-v2-caso2.jpg" alt="The Hub Mixed-Use">
+                        </div>
+                        <div class="caso-info">
+                            <div class="caso-field">
+                                <label>Proyecto</label>
+                                <p class="caso-name">The Hub Mixed-Use</p>
+                            </div>
+                            <div class="caso-field">
+                                <label>Contexto</label>
+                                <p>Desarrollo de usos mixtos que requería una explicación clara de la sinergia entre oficinas y retail.</p>
+                            </div>
+                            <div class="caso-field">
+                                <label>Capas aplicadas</label>
+                                <p>Experience Center Interactive, Visual Branding, CRM Integration.</p>
+                            </div>
+                            <div class="caso-result">
+                                <label>Resultado</label>
+                                <p>Colocación del 70% de m2 de oficinas antes del inicio de obra.</p>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <div class="swiper-slide">
-                    <div class="project-card" style="background-image: url('img/sls-img.webp');">
-                        <div class="project-overlay">
-                            <span class="project-tag">SLS</span>
-                            <div class="project-info">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                            </div>
-                        </div>
+        <!-- ========== LOGOS CLIENTES ========== -->
+        <section class="clients-section">
+            <div class="section-container">
+                <span class="section-tag centered reveal">Confían en nosotros</span>
+            </div>
+            <div class="logos-track-container">
+                <!-- Row 1 → right (7 logos) -->
+                <div class="logos-row-wrapper">
+                    <div class="logos-row scroll-right">
+                        <div class="logo-item"><img src="img/criba.webp" alt="Criba"></div>
+                        <div class="logo-item"><img src="img/ayres.webp" alt="Ayres"></div>
+                        <div class="logo-item"><img src="img/nomada.webp" alt="Nomada"></div>
+                        <div class="logo-item"><img src="img/866.webp" alt="8.66"></div>
+                        <div class="logo-item"><img src="img/pride.webp" alt="Pride"></div>
+                        <div class="logo-item"><img src="img/argenconz.webp" alt="Argenconz"></div>
+                        <div class="logo-item"><img src="img/filabe.webp" alt="Filabe"></div>
+                        <div class="logo-item"><img src="img/criba.webp" alt="Criba"></div>
+                        <div class="logo-item"><img src="img/ayres.webp" alt="Ayres"></div>
+                        <div class="logo-item"><img src="img/nomada.webp" alt="Nomada"></div>
+                        <div class="logo-item"><img src="img/866.webp" alt="8.66"></div>
+                        <div class="logo-item"><img src="img/pride.webp" alt="Pride"></div>
+                        <div class="logo-item"><img src="img/argenconz.webp" alt="Argenconz"></div>
+                        <div class="logo-item"><img src="img/filabe.webp" alt="Filabe"></div>
+                        <div class="logo-item"><img src="img/criba.webp" alt="Criba"></div>
+                        <div class="logo-item"><img src="img/ayres.webp" alt="Ayres"></div>
+                        <div class="logo-item"><img src="img/nomada.webp" alt="Nomada"></div>
+                        <div class="logo-item"><img src="img/866.webp" alt="8.66"></div>
+                        <div class="logo-item"><img src="img/pride.webp" alt="Pride"></div>
+                        <div class="logo-item"><img src="img/argenconz.webp" alt="Argenconz"></div>
+                        <div class="logo-item"><img src="img/filabe.webp" alt="Filabe"></div>
+                        <div class="logo-item"><img src="img/criba.webp" alt="Criba"></div>
+                        <div class="logo-item"><img src="img/ayres.webp" alt="Ayres"></div>
+                        <div class="logo-item"><img src="img/nomada.webp" alt="Nomada"></div>
+                        <div class="logo-item"><img src="img/866.webp" alt="8.66"></div>
+                        <div class="logo-item"><img src="img/pride.webp" alt="Pride"></div>
+                        <div class="logo-item"><img src="img/argenconz.webp" alt="Argenconz"></div>
+                        <div class="logo-item"><img src="img/filabe.webp" alt="Filabe"></div>
                     </div>
                 </div>
-
-                <div class="swiper-slide">
-                    <div class="project-card" style="background-image: url('img/pride-img.webp');">
-                        <div class="project-overlay">
-                            <span class="project-tag">Pride</span>
-                            <div class="project-info">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                            </div>
-                        </div>
+                <!-- Row 2 ← left (7 logos) -->
+                <div class="logos-row-wrapper">
+                    <div class="logos-row scroll-left">
+                        <div class="logo-item"><img src="img/3goffice.webp" alt="3g Office"></div>
+                        <div class="logo-item"><img src="img/upgrade.webp" alt="Upgrade"></div>
+                        <div class="logo-item"><img src="img/irsa.webp" alt="IRSA"></div>
+                        <div class="logo-item"><img src="img/udaondo.webp" alt="Udaondo"></div>
+                        <div class="logo-item"><img src="img/arcadia.webp" alt="Arcadia"></div>
+                        <div class="logo-item"><img src="img/cek.webp" alt="CEK"></div>
+                        <div class="logo-item"><img src="img/inco.webp" alt="Inco"></div>
+                        <div class="logo-item"><img src="img/3goffice.webp" alt="3g Office"></div>
+                        <div class="logo-item"><img src="img/upgrade.webp" alt="Upgrade"></div>
+                        <div class="logo-item"><img src="img/irsa.webp" alt="IRSA"></div>
+                        <div class="logo-item"><img src="img/udaondo.webp" alt="Udaondo"></div>
+                        <div class="logo-item"><img src="img/arcadia.webp" alt="Arcadia"></div>
+                        <div class="logo-item"><img src="img/cek.webp" alt="CEK"></div>
+                        <div class="logo-item"><img src="img/inco.webp" alt="Inco"></div>
+                        <div class="logo-item"><img src="img/3goffice.webp" alt="3g Office"></div>
+                        <div class="logo-item"><img src="img/upgrade.webp" alt="Upgrade"></div>
+                        <div class="logo-item"><img src="img/irsa.webp" alt="IRSA"></div>
+                        <div class="logo-item"><img src="img/udaondo.webp" alt="Udaondo"></div>
+                        <div class="logo-item"><img src="img/arcadia.webp" alt="Arcadia"></div>
+                        <div class="logo-item"><img src="img/cek.webp" alt="CEK"></div>
+                        <div class="logo-item"><img src="img/inco.webp" alt="Inco"></div>
+                        <div class="logo-item"><img src="img/3goffice.webp" alt="3g Office"></div>
+                        <div class="logo-item"><img src="img/upgrade.webp" alt="Upgrade"></div>
+                        <div class="logo-item"><img src="img/irsa.webp" alt="IRSA"></div>
+                        <div class="logo-item"><img src="img/udaondo.webp" alt="Udaondo"></div>
+                        <div class="logo-item"><img src="img/arcadia.webp" alt="Arcadia"></div>
+                        <div class="logo-item"><img src="img/cek.webp" alt="CEK"></div>
+                        <div class="logo-item"><img src="img/inco.webp" alt="Inco"></div>
                     </div>
                 </div>
-
-
-            </div>
-        </div>
-
-        <div class="swiper logos-swiper">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide"><img src="img/3goffice.webp" alt="Logo"></div>
-                <div class="swiper-slide"><img src="img/866.webp" alt="Logo"></div>
-                <div class="swiper-slide"><img src="img/arcadia.webp" alt="Logo"></div>
-                <div class="swiper-slide"><img src="img/argenconz.webp" alt="Logo"></div>
-                <div class="swiper-slide"><img src="img/ayres.webp" alt="Logo"></div>
-                <div class="swiper-slide"><img src="img/urbania.webp" alt="Logo"></div>
-                <div class="swiper-slide"><img src="img/broker.webp" alt="Logo"></div>
-                <div class="swiper-slide"><img src="img/cek.webp" alt="Logo"></div>
-                <div class="swiper-slide"><img src="img/colonia.webp" alt="Logo"></div>
-                <div class="swiper-slide"><img src="img/concepcion.webp" alt="Logo"></div>
-                <div class="swiper-slide"><img src="img/criba.webp" alt="Logo"></div>
-                <div class="swiper-slide"><img src="img/grupodmaz.webp" alt="Logo"></div>
-                <div class="swiper-slide"><img src="img/grupoklover.webp" alt="Logo"></div>
-                <div class="swiper-slide"><img src="img/interwin.webp" alt="Logo"></div>
-                <div class="swiper-slide"><img src="img/irsa.webp" alt="Logo"></div>
-                <div class="swiper-slide"><img src="img/zulamian.webp" alt="Logo"></div>
-                <div class="swiper-slide"><img src="img/keefe.webp" alt="Logo"></div>
-                <div class="swiper-slide"><img src="img/loom.webp" alt="Logo"></div>
-                <div class="swiper-slide"><img src="img/mirabilia.webp" alt="Logo"></div>
-                <div class="swiper-slide"><img src="img/nomada.webp" alt="Logo"></div>
-                <div class="swiper-slide"><img src="img/pleno.webp" alt="Logo"></div>
-                <div class="swiper-slide"><img src="img/pride.webp" alt="Logo"></div>
-                <div class="swiper-slide"><img src="img/sls.webp" alt="Logo"></div>
-                <div class="swiper-slide"><img src="img/udaondo.webp" alt="Logo"></div>
-                <div class="swiper-slide"><img src="img/upgrade.webp" alt="Logo"></div>
-            </div>
-        </div>
-    </section>
-
-<section class="manifesto-section">
-    <div class="container-center">
-        <span class="badge-outline">Nosotros</span>
-        
-        <h2 class="reveal-text">
-            <span class="bold">Fusionamos</span> 
-            <span class="bold">arquitectura,</span> 
-            <span class="light-italic">diseño</span> 
-            <span class="bold">y</span> 
-            <span class="bold">tecnología</span> 
-            <span class="bold">de</span> 
-            <span class="light-italic">vanguardia</span>
-        </h2>
-        
-        <p class="manifesto-desc">
-            No solo modelamos espacios; creamos entornos donde el futuro se vuelve tangible. 
-            Nuestra misión es acortar la brecha entre el plano y la experiencia real, 
-            brindando herramientas de venta inmersivas que transforman la percepción del inversor.
-        </p>
-    </div>
-</section>
-
-<section class="soluciones-section">
-    <div class="container">
-        <span class="badge-outline">Soluciones</span>
-        <h2 class="soluciones-title">Inmersión Total</h2>
-
-        <div class="soluciones-grid">
-            <div class="grid-card card-white card-tall">
-                <span class="card-num">(01)</span>
-                <div class="card-body">
-                    <h3>Virtual Showroom</h3>
-                    <p><strong>Inmersión Total. El Futuro se Camina.</strong><br>
-                    Llevamos a sus clientes al interior de su proyecto. A través de tecnología de Realidad Virtual, permitimos recorrer unidades y amenities a escala real con una fidelidad visual absoluta.</p>
-                    <p><strong>Maqueta Interactiva</strong><br>
-                    Un espacio brandeado donde el cliente interactúa con el edificio a escala, visualizando datos clave y animaciones técnicas en tiempo real.</p>
-                </div>
-            </div>
-
-            <div class="grid-card video-container">
-                <video autoplay muted loop playsinline class="video-bg">
-                    <source src="img/video-soluciones.mp4" type="video/mp4">
-                    Tu navegador no soporta video.
-                </video>
-            </div>
-
-            <div class="grid-card card-gold">
-                <span class="card-num">(02)</span>
-                <div class="card-body">
-                    <h3>Web & Mobile</h3>
-                    <p><strong>Tu proyecto, en Cualquier Pantalla.</strong><br>
-                    Una experiencia 3D compacta y potente. Permita que sus inversores exploren el edificio piso por piso y realicen recorridos 360° desde su laptop, tablet o smartphone.</p>
-                </div>
-            </div>
-
-            <div class="grid-card card-grey">
-                <span class="card-num">(03)</span>
-                <div class="card-body">
-                    <h3>XRS Control panel</h3>
-                    <p><strong>Gestión Centralizada.</strong><br>
-                    Tome el control total de sus herramientas comerciales. Administre sus experiencias VR/Web y acceda a soporte técnico especializado desde un solo panel de control intuitivo.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="arquitectura-section">
-    <div class="container-center">
-        <span class="badge-outline">Arquitectura</span>
-        
-        <h2 class="arq-title">Precisión Real.</h2>
-        
-        <p class="arq-desc">
-            Superamos el renderizado. Al modelar sus planos con precisión, 
-            permitimos a los arquitectos detectar inconsistencias o fallas de 
-            diseño antes de la obra, ahorrando costos críticos y 
-            optimizando la ejecución.
-        </p>
-    </div>
-</section>
-
-<section class="seccion-full-comparador">
-    <div class="comparador-wrapper-wide">
-        <img src="img/bajobelgrano-despues.webp" class="img-comp">
-
-        <div class="capa-superior-wide" id="capaAntes">
-            <img src="img/bajobelgrano-antes.webp" class="img-comp">
-        </div>
-
-        <div class="linea-divisoria-wide" id="lineaDiv">
-            <div class="circulo-handle"></div>
-        </div>
-
-        <input type="range" min="0" max="100" value="50" class="slider-full" oninput="actualizarComparador(this.value)">
-    </div>
-</section>
-
-<footer class="footer-section">
-    <div class="footer-container">
-        
-        <div class="footer-main-layout">
-            
-            <div class="footer-left">
-                <span class="badge-outline">Contacto</span>
-                <h2 class="footer-title">Hablemos de tu próximo proyecto.</h2>
-
-                <form class="contact-form">
-                    <div class="form-row">
-                        <input type="text" placeholder="Nombre" required>
-                        <input type="email" placeholder="Email" required>
+                <!-- Row 3 → right (7 logos) -->
+                <div class="logos-row-wrapper">
+                    <div class="logos-row scroll-right">
+                        <div class="logo-item"><img src="img/broker.webp" alt="HHO Broker"></div>
+                        <div class="logo-item"><img src="img/urbania.webp" alt="Urbania"></div>
+                        <div class="logo-item"><img src="img/interwin.webp" alt="Interwin"></div>
+                        <div class="logo-item"><img src="img/grupodmaz.webp" alt="Grupo DMAZ"></div>
+                        <div class="logo-item"><img src="img/concepcion.webp" alt="Concepción"></div>
+                        <div class="logo-item"><img src="img/colonia.webp" alt="Colonia"></div>
+                        <div class="logo-item"><img src="img/sls.webp" alt="SLS"></div>
+                        <div class="logo-item"><img src="img/broker.webp" alt="HHO Broker"></div>
+                        <div class="logo-item"><img src="img/urbania.webp" alt="Urbania"></div>
+                        <div class="logo-item"><img src="img/interwin.webp" alt="Interwin"></div>
+                        <div class="logo-item"><img src="img/grupodmaz.webp" alt="Grupo DMAZ"></div>
+                        <div class="logo-item"><img src="img/concepcion.webp" alt="Concepción"></div>
+                        <div class="logo-item"><img src="img/colonia.webp" alt="Colonia"></div>
+                        <div class="logo-item"><img src="img/sls.webp" alt="SLS"></div>
+                        <div class="logo-item"><img src="img/broker.webp" alt="HHO Broker"></div>
+                        <div class="logo-item"><img src="img/urbania.webp" alt="Urbania"></div>
+                        <div class="logo-item"><img src="img/interwin.webp" alt="Interwin"></div>
+                        <div class="logo-item"><img src="img/grupodmaz.webp" alt="Grupo DMAZ"></div>
+                        <div class="logo-item"><img src="img/concepcion.webp" alt="Concepción"></div>
+                        <div class="logo-item"><img src="img/colonia.webp" alt="Colonia"></div>
+                        <div class="logo-item"><img src="img/sls.webp" alt="SLS"></div>
+                        <div class="logo-item"><img src="img/broker.webp" alt="HHO Broker"></div>
+                        <div class="logo-item"><img src="img/urbania.webp" alt="Urbania"></div>
+                        <div class="logo-item"><img src="img/interwin.webp" alt="Interwin"></div>
+                        <div class="logo-item"><img src="img/grupodmaz.webp" alt="Grupo DMAZ"></div>
+                        <div class="logo-item"><img src="img/concepcion.webp" alt="Concepción"></div>
+                        <div class="logo-item"><img src="img/colonia.webp" alt="Colonia"></div>
+                        <div class="logo-item"><img src="img/sls.webp" alt="SLS"></div>
                     </div>
-                    <textarea placeholder="Tipo de desarrollo y servicio de Interés" rows="4" required></textarea>
-                    <button type="submit" class="btn-submit">Solicita cotizacion</button>
-                </form>
-
-                <p class="footer-desc">
-                    Complete el formulario para recibir asesoramiento técnico personalizado. 
-                    <strong>El futuro de su proyecto comienza aquí.</strong>
-                </p>
-            </div>
-
-            <div class="footer-right">
-                <video class="footer-img" autoplay muted loop playsinline>
-  <source src="img/miscelanea.mp4" type="video/mp4">
-  Tu navegador no soporta video HTML5.
-</video>
-            </div>
-
-        </div>
-
-        <div class="footer-bottom">
-            <div class="footer-logo">
-                <img src="img/logo-xrsbaseline-dorado.svg" alt="XRS Logo">
-            </div>
-            
-            <div class="footer-social-branding">
-                <div class="social-links">
-                    <a href="#" target="_blank"><img src="img/rss-insta-blanco.svg" alt="instagram"></a>
-                    <a href="#" target="_blank"><img src="img/rss-linkedin-blanco.svg" alt="linkedin"></a>
-                    <a href="#" target="_blank"><img src="img/logo-nova-blanco.svg" alt="Novaworks.io"></a>
+                </div>
+                <!-- Row 4 ← left (7 logos) -->
+                <div class="logos-row-wrapper">
+                    <div class="logos-row scroll-left">
+                        <div class="logo-item"><img src="img/loom.webp" alt="Loom"></div>
+                        <div class="logo-item"><img src="img/grupoklover.webp" alt="Grupo Klover"></div>
+                        <div class="logo-item"><img src="img/mirabilia.webp" alt="Mirabilia"></div>
+                        <div class="logo-item"><img src="img/pleno.webp" alt="Pleno"></div>
+                        <div class="logo-item"><img src="img/keefe.webp" alt="Keefe"></div>
+                        <div class="logo-item"><img src="img/zulamian.webp" alt="Zulamian"></div>
+                        <div class="logo-item"><img src="img/niu.webp" alt="NIU"></div>
+                        <div class="logo-item"><img src="img/loom.webp" alt="Loom"></div>
+                        <div class="logo-item"><img src="img/grupoklover.webp" alt="Grupo Klover"></div>
+                        <div class="logo-item"><img src="img/mirabilia.webp" alt="Mirabilia"></div>
+                        <div class="logo-item"><img src="img/pleno.webp" alt="Pleno"></div>
+                        <div class="logo-item"><img src="img/keefe.webp" alt="Keefe"></div>
+                        <div class="logo-item"><img src="img/zulamian.webp" alt="Zulamian"></div>
+                        <div class="logo-item"><img src="img/niu.webp" alt="NIU"></div>
+                        <div class="logo-item"><img src="img/loom.webp" alt="Loom"></div>
+                        <div class="logo-item"><img src="img/grupoklover.webp" alt="Grupo Klover"></div>
+                        <div class="logo-item"><img src="img/mirabilia.webp" alt="Mirabilia"></div>
+                        <div class="logo-item"><img src="img/pleno.webp" alt="Pleno"></div>
+                        <div class="logo-item"><img src="img/keefe.webp" alt="Keefe"></div>
+                        <div class="logo-item"><img src="img/zulamian.webp" alt="Zulamian"></div>
+                        <div class="logo-item"><img src="img/niu.webp" alt="NIU"></div>
+                        <div class="logo-item"><img src="img/loom.webp" alt="Loom"></div>
+                        <div class="logo-item"><img src="img/grupoklover.webp" alt="Grupo Klover"></div>
+                        <div class="logo-item"><img src="img/mirabilia.webp" alt="Mirabilia"></div>
+                        <div class="logo-item"><img src="img/pleno.webp" alt="Pleno"></div>
+                        <div class="logo-item"><img src="img/keefe.webp" alt="Keefe"></div>
+                        <div class="logo-item"><img src="img/zulamian.webp" alt="Zulamian"></div>
+                        <div class="logo-item"><img src="img/niu.webp" alt="NIU"></div>
+                    </div>
                 </div>
             </div>
-        </div>
-        
-        <p class="copyright">@2026 Todos los derechos reservados | Novaworks.io</p>
-    </div>
-</footer>
+        </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="script.js"></script>
+        <!-- ========== FINAL CTA ========== -->
+        <section class="final-cta-section">
+            <div class="section-container centered">
+                <h2 class="reveal">Si el proyecto ya está por salir, no dejes su comercialización librada a piezas sueltas.</h2>
+                <div class="final-cta-buttons reveal">
+                    <a href="mailto:hola@xrs.com.ar" class="btn-primary btn-lg">Hablemos de tu próximo desarrollo</a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ========== FOOTER ========== -->
+    <footer class="footer-section" id="contacto">
+        <div class="footer-container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <img src="img/logo-xrsbaseline-dorado.svg" alt="XRS Logo" class="footer-logo">
+                    <p>Transformamos la visión arquitectónica en activos comerciales de alto rendimiento.</p>
+                </div>
+                <div class="footer-links-grid">
+                    <div class="footer-col">
+                        <h5>Estrategia</h5>
+                        <a href="#enfoque">Enfoque</a>
+                        <a href="#filosofia">Metodología</a>
+                        <a href="#diagnostico">Diagnóstico</a>
+                    </div>
+                    <div class="footer-col">
+                        <h5>Compañía</h5>
+                        <a href="#casos">Casos</a>
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">Terms of Service</a>
+                    </div>
+                    <div class="footer-col">
+                        <h5>Contacto</h5>
+                        <a href="mailto:hola@xrs.com.ar">hola@xrs.com.ar</a>
+                        <a href="https://wa.me/5491100000000" target="_blank">WhatsApp</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 XRS Strategic Partners. All rights reserved. | <a href="https://novaworks.io" target="_blank">Novaworks.io</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp FAB -->
+    <a href="https://wa.me/5491100000000" class="whatsapp-fab" target="_blank" aria-label="WhatsApp">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="white" width="26" height="26">
+            <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-23.1-115-65.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z" />
+        </svg>
+    </a>
+
+    <script type="module" src="script.js"></script>
 </body>
+
 </html>
-
-
-
-
