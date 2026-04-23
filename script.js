@@ -54,9 +54,9 @@ function buildDOM() {
             clip.modules.forEach(m => {
                 const el = document.createElement('div');
                 el.className = 'hero-dyn';
-                el.dataset.cs = clip.start;
-                el.dataset.ce = clip.end;
-                el.dataset.delay = m.delay || 0;
+                // Independent start/end per module (fallback to clip range + delay for old configs)
+                el.dataset.cs = m.start != null ? m.start : (clip.start + (m.delay || 0));
+                el.dataset.ce = m.end != null ? m.end : clip.end;
                 el.dataset.anim = m.animation || 'fade-up';
                 el.dataset.fadeIn = m.fadeIn || 0;
                 el.dataset.fadeOut = m.fadeOut || 0;
@@ -185,15 +185,13 @@ if (canvas && ctx && heroSection) {
         // Animate text modules
         const fd = cfg.fadeDuration || 0.04;
         heroSection.querySelectorAll('.hero-dyn').forEach(el => {
-            const cs = parseFloat(el.dataset.cs);
+            const ms = parseFloat(el.dataset.cs);
             const ce = parseFloat(el.dataset.ce);
-            const delay = parseFloat(el.dataset.delay) || 0;
             const anim = el.dataset.anim || 'fade-up';
             const maxOp = parseFloat(el.dataset.opacity) || 1;
             const align = el.dataset.textAlign || 'left';
             const fdIn = parseFloat(el.dataset.fadeIn) || fd;
             const fdOut = parseFloat(el.dataset.fadeOut) || fd;
-            const ms = cs + delay;
 
             let op = 0, tx = 0, ty = 0, sc = 1, bl = 0;
             if (progress >= ms && progress <= ce) {
