@@ -58,6 +58,8 @@ function buildDOM() {
                 el.dataset.ce = clip.end;
                 el.dataset.delay = m.delay || 0;
                 el.dataset.anim = m.animation || 'fade-up';
+                el.dataset.fadeIn = m.fadeIn || 0;
+                el.dataset.fadeOut = m.fadeOut || 0;
 
                 // Styling
                 Object.assign(el.style, {
@@ -81,7 +83,7 @@ function buildDOM() {
 
                 if (m.textAlign === 'right') { el.style.left = 'auto'; el.style.right = (100 - m.x) + '%'; }
                 if (m.textAlign === 'center') { el.style.transform = 'translateX(-50%)'; }
-                if (m.type === 'tag' || m.type === 'cta') el.style.textTransform = 'uppercase';
+                if (m.type === 'tag' || m.type === 'cta' || m.type === 'button' || m.type === 'badge') el.style.textTransform = 'uppercase';
 
                 if (m.type === 'cta' && m.bgColor) {
                     Object.assign(el.style, {
@@ -97,7 +99,27 @@ function buildDOM() {
                     });
                 }
 
-                // Also add a second CTA (outline) for the final scene
+                if (m.type === 'button') {
+                    Object.assign(el.style, {
+                        display: 'inline-block', padding: '0.7em 2em', borderRadius: '2px',
+                        border: '1.5px solid ' + (m.borderColor || m.color || '#e7bf9c'), cursor: 'pointer',
+                    });
+                    el.dataset.isCta = 'true';
+                    el.dataset.href = m.href || '#contacto';
+                    el.style.pointerEvents = 'auto';
+                    el.addEventListener('click', () => {
+                        const target = document.querySelector(m.href || '#contacto');
+                        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    });
+                }
+
+                if (m.type === 'badge' && m.bgColor) {
+                    Object.assign(el.style, {
+                        background: m.bgColor, display: 'inline-block',
+                        padding: '0.4em 1.2em', borderRadius: '100px',
+                    });
+                }
+
                 el.textContent = m.content || '';
                 sticky.appendChild(el);
             });
@@ -169,12 +191,14 @@ if (canvas && ctx && heroSection) {
             const anim = el.dataset.anim || 'fade-up';
             const maxOp = parseFloat(el.dataset.opacity) || 1;
             const align = el.dataset.textAlign || 'left';
+            const fdIn = parseFloat(el.dataset.fadeIn) || fd;
+            const fdOut = parseFloat(el.dataset.fadeOut) || fd;
             const ms = cs + delay;
 
             let op = 0, tx = 0, ty = 0, sc = 1, bl = 0;
             if (progress >= ms && progress <= ce) {
-                const inP = Math.min(1, (progress - ms) / fd);
-                const outP = Math.min(1, (ce - progress) / fd);
+                const inP = Math.min(1, (progress - ms) / fdIn);
+                const outP = Math.min(1, (ce - progress) / fdOut);
                 op = Math.min(inP, outP) * maxOp;
                 const ease = 1 - inP, dist = 40;
                 switch (anim) {
