@@ -116,7 +116,10 @@ textarea.prop-input{resize:vertical;min-height:50px;line-height:1.4}
 .tl-row-mod .tl-label{height:24px;display:flex;align-items:center;padding:0 8px 0 26px;gap:5px;font-size:.65rem;color:var(--text-dim);border-bottom:1px solid rgba(42,42,42,.5);overflow:hidden;white-space:nowrap;cursor:pointer}
 .tl-row-mod .tl-label:hover{background:rgba(255,255,255,.03)}
 .tl-row-mod .tl-label.selected{background:var(--accent-dim);color:var(--text)}
+.tl-row-mod.selected .tl-label{background:var(--accent-dim);color:var(--text)}
+.tl-row-mod.selected .tl-track{background:rgba(231,191,156,.04)}
 .tl-row-mod .tl-track{height:24px;border-bottom:1px solid rgba(42,42,42,.5)}
+.tl-row-mod.drop-target .tl-track{background:rgba(231,191,156,.1);box-shadow:inset 0 0 0 1px var(--accent)}
 .tl-mod-type{font-size:.5rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:1px 4px;border-radius:2px;background:var(--surface-3);color:var(--text-muted);flex-shrink:0}
 .tl-mod-text{flex:1;overflow:hidden;text-overflow:ellipsis}
 
@@ -129,6 +132,8 @@ textarea.prop-input{resize:vertical;min-height:50px;line-height:1.4}
 .tl-clip-handle.right{right:0;border-radius:0 4px 4px 0}
 .tl-clip-handle:hover{background:rgba(255,255,255,.25)}
 .tl-clip-summary{opacity:.45;font-size:.5rem}
+.tl-snap-line{position:absolute;top:0;bottom:0;width:1px;background:var(--accent);z-index:25;pointer-events:none;opacity:.7}
+.tl-clip.dragging{opacity:.6;z-index:15}
 
 /* ── Playhead ── */
 .tl-playhead{position:absolute;top:0;width:2px;background:var(--accent);z-index:20;pointer-events:none}
@@ -618,9 +623,12 @@ config.tracks.forEach((track,ti)=>{
         track.clips.forEach((clip,ci)=>{
             if(!clip.modules)return;
             clip.modules.forEach((mod,mi)=>{
-                const row=document.createElement('div');row.className='tl-row tl-row-mod';
+                const isSel=sel.track===ti&&sel.clip===ci&&sel.mod===mi;
+                const row=document.createElement('div');
+                row.className='tl-row tl-row-mod'+(isSel?' selected':'');
+                row.dataset.ti=ti;row.dataset.ci=ci;row.dataset.mi=mi;
                 const lbl=document.createElement('div');
-                lbl.className='tl-label'+(sel.track===ti&&sel.clip===ci&&sel.mod===mi?' selected':'');
+                lbl.className='tl-label'+(isSel?' selected':'');
                 const mt=MOD_TYPES[mod.type];
                 lbl.innerHTML=`<span class="tl-mod-type">${mt?mt.label:mod.type}</span><span class="tl-mod-text">${escH(mod.content).substring(0,18)}</span>`;
                 lbl.onclick=()=>selectMod(ti,ci,mi);
@@ -629,7 +637,7 @@ config.tracks.forEach((track,ti)=>{
                 const modStart=clip.start+(mod.delay||0);
                 const modEnd=clip.end;
                 const clipEl=document.createElement('div');
-                clipEl.className='tl-clip'+(sel.track===ti&&sel.clip===ci&&sel.mod===mi?' selected':'');
+                clipEl.className='tl-clip'+(isSel?' selected':'');
                 clipEl.style.left=(modStart*totalW)+'px';
                 clipEl.style.width=(Math.max(0,modEnd-modStart)*totalW)+'px';
                 clipEl.style.background=color;
@@ -693,11 +701,12 @@ if(ph)ph.style.left=(progress*totalW+170)+'px';
 
 /* ── DRAG HANDLERS ── */
 let dragState=null;
+const SNAP_THRESHOLD=.012; // snap distance in progress units
 
 function startDragMod(e,ti,ci,mi,totalW){
 const mod=config.tracks[ti].clips[ci].modules[mi];
 const clip=config.tracks[ti].clips[ci];
-dragState={type:'mod-move',ti,ci,mi,startX:e.clientX,origDelay:mod.delay||0,clipStart:clip.start,clipEnd:clip.end,totalW};
+dragState={type:'mod-move',ti,ci,mi,startX:e.clientX,startY:e.clientY,origDelay:mod.delay||0,clipStart:clip.start,clipEnd:clip.end,totalW,moved:false};
 }
 function startResizeModDelay(e,ti,ci,mi,totalW){
 const mod=config.tracks[ti].clips[ci].modules[mi];
@@ -713,28 +722,175 @@ const clip=config.tracks[ti].clips[ci];
 dragState={type:'resize',ti,ci,edge,startX:e.clientX,origVal:clip[edge],totalW};
 }
 
+/* Collect all module edges for snapping (excluding the dragged module) */
+function getSnapEdges(excludeTi,excludeCi,excludeMi){
+const edges=[];
+config.tracks.forEach((track,ti)=>{
+    if(track.type!=='text')return;
+    track.clips.forEach((clip,ci)=>{
+        if(!clip.modules)return;
+        clip.modules.forEach((mod,mi)=>{
+            if(ti===excludeTi&&ci===excludeCi&&mi===excludeMi)return;
+            const s=clip.start+(mod.delay||0);
+            const e=clip.end;
+            edges.push(s,e);
+        });
+        // Also snap to clip boundaries
+        edges.push(clip.start,clip.end);
+    });
+});
+return edges;
+}
+
+/* Find nearest snap point */
+function snapTo(val,edges){
+let best=val,bestD=SNAP_THRESHOLD;
+for(const e of edges){
+    const d=Math.abs(val-e);
+    if(d<bestD){bestD=d;best=e;}
+}
+return best;
+}
+
+/* Find which row the mouse is over (for cross-row drop) */
+function getRowUnderMouse(e){
+const rows=document.querySelectorAll('.tl-row-mod[data-ti]');
+for(const row of rows){
+    const rect=row.getBoundingClientRect();
+    if(e.clientY>=rect.top&&e.clientY<rect.bottom){
+        return{ti:+row.dataset.ti,ci:+row.dataset.ci,mi:+row.dataset.mi,row};
+    }
+}
+return null;
+}
+
+/* Clear all drop target highlights */
+function clearDropTargets(){
+document.querySelectorAll('.tl-row-mod.drop-target').forEach(r=>r.classList.remove('drop-target'));
+}
+function clearSnapLines(){
+document.querySelectorAll('.tl-snap-line').forEach(el=>el.remove());
+}
+
 window.addEventListener('mousemove',(e)=>{
 if(!dragState)return;
 const dx=e.clientX-dragState.startX;
 const dp=dx/dragState.totalW;
 const clip=config.tracks[dragState.ti].clips[dragState.ci];
+
 if(dragState.type==='move'){
     const dur=dragState.origEnd-dragState.origStart;
     let ns=Math.max(0,Math.min(1-dur,dragState.origStart+dp));
     clip.start=+ns.toFixed(4);clip.end=+(ns+dur).toFixed(4);
+    renderTimeline();renderPreview();
 }else if(dragState.type==='resize'){
     let nv=Math.max(0,Math.min(1,dragState.origVal+dp));
     clip[dragState.edge]=+nv.toFixed(4);
     if(clip.start>=clip.end-.005){if(dragState.edge==='start')clip.start=clip.end-.005;else clip.end=clip.start+.005;}
-}else if(dragState.type==='mod-move'||dragState.type==='mod-delay'){
+    renderTimeline();renderPreview();
+}else if(dragState.type==='mod-delay'){
     const mod=clip.modules[dragState.mi];
     let nd=Math.max(0,dragState.origDelay+dp);
     if(dragState.clipStart+nd>=dragState.clipEnd-.005)nd=dragState.clipEnd-dragState.clipStart-.005;
+    // Snap left edge
+    const edges=getSnapEdges(dragState.ti,dragState.ci,dragState.mi);
+    const modStart=dragState.clipStart+nd;
+    const snapped=snapTo(modStart,edges);
+    if(snapped!==modStart)nd=snapped-dragState.clipStart;
+    nd=Math.max(0,nd);
     mod.delay=+nd.toFixed(4);
+    renderTimeline();renderPreview();
+    showSnapLine(snapped);
+}else if(dragState.type==='mod-move'){
+    dragState.moved=true;
+    const mod=clip.modules[dragState.mi];
+
+    // Horizontal: update delay with snapping
+    let nd=Math.max(0,dragState.origDelay+dp);
+    if(dragState.clipStart+nd>=dragState.clipEnd-.005)nd=dragState.clipEnd-dragState.clipStart-.005;
+    const edges=getSnapEdges(dragState.ti,dragState.ci,dragState.mi);
+    const modStart=dragState.clipStart+nd;
+    const modEnd=dragState.clipEnd;
+    const snappedStart=snapTo(modStart,edges);
+    const snappedEnd=snapTo(modEnd,edges);
+    // Prefer snapping whichever edge is closer to a snap point
+    const dStart=Math.abs(snappedStart-modStart);
+    const dEnd=Math.abs(snappedEnd-modEnd);
+    let snapUsed=modStart;
+    if(dStart<=dEnd&&dStart<SNAP_THRESHOLD){
+        nd=snappedStart-dragState.clipStart;
+        nd=Math.max(0,nd);
+        snapUsed=snappedStart;
+    }else if(dEnd<SNAP_THRESHOLD){
+        // Snap right edge — but delay controls left edge, so adjust
+        // We can't move the right edge independently for mod-move, skip right snap
+        snapUsed=modStart;
+    }
+    mod.delay=+nd.toFixed(4);
+
+    renderTimeline();renderPreview();
+
+    // Vertical: detect cross-row drop target (after renderTimeline rebuilds DOM)
+    clearDropTargets();
+    const target=getRowUnderMouse(e);
+    if(target&&!(target.ti===dragState.ti&&target.ci===dragState.ci&&target.mi===dragState.mi)){
+        target.row.classList.add('drop-target');
+        dragState.dropTarget=target;
+    }else{
+        dragState.dropTarget=null;
+    }
+    showSnapLine(snapUsed);
 }
-renderTimeline();renderPreview();
 });
-window.addEventListener('mouseup',()=>{if(dragState){autoSave();dragState=null;}});
+
+function showSnapLine(pos){
+clearSnapLines();
+// Only show if pos was actually snapped
+const edges=getSnapEdges(-1,-1,-1);
+let isSnap=false;
+for(const e of edges){if(Math.abs(pos-e)<.001){isSnap=true;break;}}
+if(!isSnap)return;
+const rowsWrap=document.getElementById('tlRows');
+if(!rowsWrap)return;
+const line=document.createElement('div');
+line.className='tl-snap-line';
+line.style.left=(pos*dragState.totalW+170)+'px';
+rowsWrap.appendChild(line);
+}
+
+window.addEventListener('mouseup',(e)=>{
+if(!dragState){return;}
+
+// Handle cross-row drop for mod-move
+if(dragState.type==='mod-move'&&dragState.dropTarget){
+    const dt=dragState.dropTarget;
+    const srcTrack=config.tracks[dragState.ti];
+    const srcClip=srcTrack.clips[dragState.ci];
+    const mod=srcClip.modules[dragState.mi];
+    const dstTrack=config.tracks[dt.ti];
+    const dstClip=dstTrack.clips[dt.ci];
+
+    // Remove from source
+    srcClip.modules.splice(dragState.mi,1);
+    // Recalculate delay for destination clip
+    mod.delay=Math.max(0,+(( (srcClip.start+(dragState.origDelay + (e.clientX-dragState.startX)/dragState.totalW)) - dstClip.start)).toFixed(4));
+    if(mod.delay<0)mod.delay=0;
+    if(dstClip.start+mod.delay>=dstClip.end)mod.delay=+Math.max(0,dstClip.end-dstClip.start-.005).toFixed(4);
+    // Insert into destination
+    dstClip.modules.splice(dt.mi+1,0,mod);
+    // Update selection
+    sel={track:dt.ti,clip:dt.ci,mod:dt.mi+1};
+    // Clean up empty source clip
+    if(srcClip.modules.length===0){
+        srcTrack.clips.splice(dragState.ci,1);
+        if(sel.track===dragState.ti&&sel.clip>dragState.ci)sel.clip--;
+    }
+}
+
+clearDropTargets();clearSnapLines();
+autoSave();dragState=null;
+renderTimeline();renderPreview();renderProps();
+});
 
 /* ── RULER CLICK ── */
 document.getElementById('tlBody').addEventListener('mousedown',(e)=>{
